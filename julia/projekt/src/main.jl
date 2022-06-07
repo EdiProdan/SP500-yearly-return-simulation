@@ -35,10 +35,11 @@ df = DataFrame(CSV.File("./projekt/csv/povijesni_model_sp500.csv"))
 
 
 ## plottanje grafa
-dates = df[!, :Date]
-price = df[!, :Close]
+dates = df[!, :Date] # polje svih datuma
+price = df[!, :Close] # polje svih zavrsnih cijena
 
 plot_pi = plot(dates,reverse(price),title="S&P 500 indeks tijekom 40 godina", label="S&P 500", xlabel="godine", legend=:topleft)
+# 253 trading dana, gledamo za proslih 40, 30, 20 i 10 godina i sadasnjost
 xticks!([0,253*10,253*20, 253*30, 253*40], ["1980", "1990", "2000", "2010", "2020"])
 savefig(plot_pi, "sp500_40y")
 ##
@@ -52,14 +53,14 @@ delete!(yearClose, [1,8,9,12,17,21,28,29,31]) # ispravljanje neispravnih podatak
 
 
 ## godine
-yrsF = yearOpen[!,:Date]   # uzimamo puni datum
-yrs=[]
+yrsF = yearOpen[!,:Date]   # uzimamo prve godine proslih 40 godina
+yrs=[] 
 
-# u novi vektor stavljamo sve godine koje su iz preuzetih podataka
+# u novi vektor stavljamo sve godine koje su iz preuzetih podataka 
+# i zapisujemo 19 ili 20 ovisno o zadnje 2 znamenke godine
 for i in yrsF
    push!(yrs,(parse(Int64, SubString(i, 7:8)) > 80) ? (parse(Int64, "19"*SubString(i,7:8))) : (parse(Int64,"20"*SubString(i,7:8))))
 end
-
 ##
 
 
@@ -75,11 +76,9 @@ for i in eachrow(yearOpen)
    push!(openArr,i[:Open])
 end
 
-# u vektor difference racunamo krajnju vrijednost, vrijednost i postotnu razliku izmedu svake godine
+# u vektor difference racunamo postotnu razliku izmedu svake godine
 difference = []
-points = []
 for i in 1:size(openArr,1)
-   push!(points, (closeArr[i]-openArr[i])) # racunamo
    push!(difference,(closeArr[i]-openArr[i])/openArr[i]*100)
 end
 
@@ -89,7 +88,7 @@ for i in 1:size(difference,1)
    push!(stdDev, sqrt(abs2(difference[i] - expectedAnnualReturn)))
 end
 
-totalStdDev = sum(stdDev)/size(stdDev,1)
+totalStdDev = sum(stdDev)/size(stdDev,1) # standradna devijacija cijelog modela
 
 ##
 
@@ -103,10 +102,10 @@ stdDev = totalStdDev)
 
 ##
 function norm_dist_annual(annualReturn, stdDev)
-   μ = annualReturn
-   σ = stdDev
-   dist = Normal(μ, σ)
-   x = μ - 3σ : 0.01 : μ + 3σ
+   μ = annualReturn # ocekivanje
+   σ = stdDev # standardna devijacija
+   dist = Normal(μ, σ) # pozivamo fju za normalnu distribuciju
+   x = μ - 3σ : 0.01 : μ + 3σ # 3 sigma pravilo -> vjerojatnost ispod gustoce = 0.9973
    plot_nd = plot(x-> pdf(dist,x), -30, 50)
    xticks!(-30:10:50)
    title!("Normalna Razdioba")
@@ -118,7 +117,9 @@ end
 
 
 ##
-annualReturn = dfSP[!,:annualReturn][1]/12
+# uzimamo godisnji povrat (12 mjeseci) u postocima
+annualReturn = dfSP[!,:annualReturn][1]/12 
+# uzimamo standardnu devijaciju cijelog modela (12 mjeseci) u postocima
 stdDev = dfSP[!,:stdDev][1]/12
 norm_dist_annual(annualReturn, stdDev)
 ##
