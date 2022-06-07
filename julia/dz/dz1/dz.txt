@@ -1,0 +1,9 @@
+1. Što dobijete u Julii kada upišete x = y = 1?
+2. Što dobijete u Julii kada upišete 15 = a?
+3. Što dobijete u Julii kada upišete xy, a što kada upišete x ∗ y?
+4. Napišite funkciju koja za danu vrijednost a i oznaku ”kocka” ili ”sfera” računa volumen tog objekta. Ako objekt nije ni kocka ni sfera, funkcija treba ispisati poruku da se ne radi o navedenim objektima pa nije moguće izračunati volumen. Podsjetnik - volumen kocke računa
+se kao V􏰀 = a3, dok se volumen sfere računa kao V◦ = 34πa3
+5. Napravite funkciju koja vraća apsolutnu vrijednost nekog broja!
+6. Napravite funkciju koja računa udaljenost između neke dvije točke (x1, y1) i (x2, y2). Udaljenost se računa kao: d = 􏰁(x2 − x1)2 + (y2 − y1)2.
+7. Ispišite sve brojeve između 1 i 30 koji nisu dijeljivi s brojem tri!
+8. Napišite kod koji računa koliko slova "a" ima u rečenici "Volim studirati u Zagrebu."!
